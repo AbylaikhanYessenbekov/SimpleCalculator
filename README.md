@@ -7,6 +7,8 @@ Simple calculator app with pretty UI
 A new Flutter application.
 
 ## Getting Started
+![city](https://user-images.githubusercontent.com/71647010/141427373-239ffa1e-8c4f-4043-b360-108062d93cf8.jpeg)
+
 
 This project is a starting point for a Flutter application.
 
