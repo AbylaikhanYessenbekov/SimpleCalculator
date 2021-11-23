@@ -7,7 +7,7 @@ Simple calculator app with pretty UI
 A new Flutter application.
 
 ## Getting Started
-<img src = "https://user-images.githubusercontent.com/71647010/142989832-ee619e54-6654-4016-a2e4-470f20da9943.png" width="250" height="350"/>
+<img src = "https://user-images.githubusercontent.com/71647010/142989832-ee619e54-6654-4016-a2e4-470f20da9943.png" width="300" height="450"/>
 ![image](https://user-images.githubusercontent.com/71647010/142989832-ee619e54-6654-4016-a2e4-470f20da9943.png =250x250)
 
 This project is a starting point for a Flutter application.
