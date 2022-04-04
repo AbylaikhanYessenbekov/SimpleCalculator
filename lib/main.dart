@@ -1,7 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:math_expressions/math_expressions.dart';
+import 'colors.dart';
 
 void main() {
   runApp(MyApp());
@@ -23,6 +23,19 @@ class SimpleCalculator extends StatefulWidget {
 }
 
 class _SimpleCalculatorState extends State<SimpleCalculator> {
+
+  bool daySelected = true;
+  bool nightSelected = false;
+  Color dayIconColor = Colors.black;
+  Color nightIconColor = Colors.grey;
+
+  Color backgroundColor = Colors.white;
+  Color fontColor = Colors.black;
+  Color panelColor = Colors.white;
+  Color buttonColor = Colors.white;
+  Color switchBackgroundColor = Colors.white;
+  Color switchBorderColor = Colors.white;
+
   String equation = "0";
   String expression = "";
   String result = "0";
@@ -42,10 +55,7 @@ class _SimpleCalculatorState extends State<SimpleCalculator> {
         } else {
           equation = '-' + equation;
         }
-      }
-
-
-        else if (buttonText == '⌫') {
+      } else if (buttonText == '⌫') {
         equationFontSize = 48.0;
         resultFontSize = 38.0;
         equation = equation.substring(0, equation.length - 1);
@@ -89,13 +99,13 @@ class _SimpleCalculatorState extends State<SimpleCalculator> {
   }
 
   Widget buildButton(
-      String buttonText, double buttonHeight, Color buttonColor) {
+      String buttonText, double buttonHeight, Color fontColor) {
     return Container(
       height: MediaQuery.of(context).size.height * 0.1 * buttonHeight,
       padding: EdgeInsets.all(0.0),
       margin: EdgeInsets.all(5.0),
       decoration: BoxDecoration(
-          color: Color(0xFF272B33), borderRadius: BorderRadius.circular(28.0)),
+          color: buttonColor, borderRadius: BorderRadius.circular(28.0)),
       child: FlatButton(
         onPressed: () => buttonPressed(buttonText),
         child: Text(
@@ -103,7 +113,7 @@ class _SimpleCalculatorState extends State<SimpleCalculator> {
           style: TextStyle(
             fontSize: 30.0,
             fontWeight: FontWeight.w500,
-            color: buttonColor,
+            color: fontColor,
           ),
         ),
         padding: EdgeInsets.all(16.0),
@@ -117,17 +127,97 @@ class _SimpleCalculatorState extends State<SimpleCalculator> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff23252D),
+      backgroundColor: backgroundColor,
       appBar: AppBar(
-        backgroundColor: Color(0xff23252D),
-        title: Text("Simple Calculator"),
+        backgroundColor: backgroundColor,
+        title: Text("Simple Calculator", style: TextStyle(color: fontColor),),
       ),
       body: SafeArea(
         // left: false,
         // bottom: false,
         child: Column(
           children: [
-            Expanded(
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      child: GestureDetector(
+                        child: Icon(
+                          Icons.wb_sunny,
+                          color: dayIconColor,
+                        ),
+                        onTap: () {
+                          setState(() {
+                            daySelected = true;
+                            dayIconColor = daySelected ? Colors.black : Colors.grey;
+                            nightIconColor = Colors.grey;
+
+                            backgroundColor = BrightTheme().backgroundColor;
+                            panelColor = BrightTheme().panelColor;
+                            fontColor = BrightTheme().fontColor;
+                            buttonColor = BrightTheme().buttonColor;
+                            switchBorderColor = BrightTheme().switchBorderColor;
+                            switchBackgroundColor = BrightTheme().switchBackgroundColor;
+                          });
+                        },
+                      ),
+                    ),
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: switchBackgroundColor,
+                      border: Border.all(
+                        color: switchBorderColor,
+                      ),
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(30),
+                        bottomLeft: Radius.circular(30),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      child: GestureDetector(
+                        child: Icon(
+                          Icons.nightlight_round,
+                          color: nightIconColor,
+                        ),
+                        onTap: () {
+                          setState(() {
+                            nightSelected = true;
+                            dayIconColor = Colors.grey;
+                            nightIconColor = Colors.black;
+
+                            backgroundColor = DarkTheme().backgroundColor;
+                            panelColor = DarkTheme().panelColor;
+                            fontColor = DarkTheme().fontColor;
+                            buttonColor = DarkTheme().buttonColor;
+                            switchBorderColor = DarkTheme().switchBorderColor;
+                            switchBackgroundColor = DarkTheme().switchBackgroundColor;
+                          });
+                        },
+                      ),
+                    ),
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: switchBackgroundColor,
+                      border: Border.all(
+                        color: switchBorderColor,
+                      ),
+                      borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(30),
+                        bottomRight: Radius.circular(30),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Expanded( //            Equation field
               child: Container(
                 alignment: Alignment.centerRight,
                 padding: EdgeInsets.fromLTRB(10, 20, 10, 0),
@@ -135,20 +225,20 @@ class _SimpleCalculatorState extends State<SimpleCalculator> {
                   equation,
                   style: TextStyle(
                     fontSize: equationFontSize,
-                    color: Colors.white,
+                    color: fontColor,
                   ),
                 ),
               ),
             ),
-            Container(
-              color: Color(0xff23252D),
+            Container( //           Results field
+              color: backgroundColor,
               alignment: Alignment.centerRight,
               padding: EdgeInsets.fromLTRB(10, 20, 10, 0),
               child: AutoSizeText(
                 result,
                 style: TextStyle(
                   fontSize: resultFontSize,
-                  color: Colors.white,
+                  color: fontColor,
                 ),
               ),
             ),
@@ -157,7 +247,7 @@ class _SimpleCalculatorState extends State<SimpleCalculator> {
             ),
             Container(
               decoration: BoxDecoration(
-                color: Color(0xff292D36),
+                color: panelColor,
                 shape: BoxShape.rectangle,
                 borderRadius: BorderRadius.circular(25.0),
               ),
@@ -170,97 +260,37 @@ class _SimpleCalculatorState extends State<SimpleCalculator> {
                       children: [
                         TableRow(
                           children: [
-                            buildButton(
-                              'C',
-                              1,
-                              Color(0xff275654),
-                            ),
-                            buildButton(
-                              '⁺∕₋',
-                              1,
-                              Color(0xff275654),
-                            ),
-                            buildButton(
-                              '%',
-                              1,
-                              Color(0xff275654),
-                            ),
+                            buildButton('C', 1, Color(0xff275654)),
+                            buildButton('⁺∕₋', 1, Color(0xff275654)),
+                            buildButton('%', 1, Color(0xff275654)),
                           ],
                         ),
                         TableRow(
                           children: [
-                            buildButton(
-                              '7',
-                              1,
-                              Colors.white,
-                            ),
-                            buildButton(
-                              '8',
-                              1,
-                              Colors.white,
-                            ),
-                            buildButton(
-                              '9',
-                              1,
-                              Colors.white,
-                            ),
+                            buildButton('7', 1, fontColor),
+                            buildButton('8', 1, fontColor),
+                            buildButton('9', 1, fontColor),
                           ],
                         ),
                         TableRow(
                           children: [
-                            buildButton(
-                              '4',
-                              1,
-                              Colors.white,
-                            ),
-                            buildButton(
-                              '5',
-                              1,
-                              Colors.white,
-                            ),
-                            buildButton(
-                              '6',
-                              1,
-                              Colors.white,
-                            ),
+                            buildButton('4', 1, fontColor),
+                            buildButton('5', 1, fontColor),
+                            buildButton('6', 1, fontColor),
                           ],
                         ),
                         TableRow(
                           children: [
-                            buildButton(
-                              '1',
-                              1,
-                              Colors.white,
-                            ),
-                            buildButton(
-                              '2',
-                              1,
-                              Colors.white,
-                            ),
-                            buildButton(
-                              '3',
-                              1,
-                              Colors.white,
-                            ),
+                            buildButton('1', 1, fontColor),
+                            buildButton('2', 1, fontColor),
+                            buildButton('3', 1, fontColor),
                           ],
                         ),
                         TableRow(
                           children: [
-                            buildButton(
-                              '⌫',
-                              1,
-                              Colors.white,
-                            ),
-                            buildButton(
-                              '0',
-                              1,
-                              Colors.white,
-                            ),
-                            buildButton(
-                              '.',
-                              1,
-                              Colors.white,
-                            ),
+                            buildButton('⌫', 1, fontColor),
+                            buildButton('0', 1, fontColor),
+                            buildButton('.', 1, fontColor),
                           ],
                         ),
                       ],
